@@ -317,7 +317,6 @@ audioinput._audioInputEvent = function (audioInputData) {
     try {
         if (audioInputData && audioInputData.data && audioInputData.data.length > 0) {
             var audioData = JSON.parse(audioInputData.data);
-            audioData = audioinput._normalizeAudio(audioData);
 
             if (audioinput._cfg.streamToWebAudio && audioinput._capturing) {
                 audioinput._enqueueAudioData(audioData);
