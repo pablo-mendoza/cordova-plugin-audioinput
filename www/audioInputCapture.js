@@ -59,7 +59,7 @@ audioinput.AUDIOSOURCE_TYPE = {
 
 // Default values
 audioinput.DEFAULT = {
-    SAMPLERATE: audioinput.SAMPLERATE.CD_AUDIO_44100Hz,
+    SAMPLERATE: audioinput.SAMPLERATE.CD_AUDIO_48000Hz,
     BUFFER_SIZE: 16384,
     CHANNELS: audioinput.CHANNELS.MONO,
     FORMAT: audioinput.FORMAT.PCM_16BIT,
@@ -285,6 +285,15 @@ audioinput.getCfg = function () {
  */
 audioinput.isCapturing = function () {
     return audioinput._capturing;
+};
+
+/**
+ * Asks the user for permission to access the microphone.
+ *
+ * @param onComplete
+ */
+ audioinput.getAudioDeviceName = function (onComplete) {
+    exec(onComplete, audioinput._audioInputErrorEvent, "AudioInputCapture", "getAudioDeviceName", []);
 };
 
 

@@ -38,6 +38,15 @@
 
 - (void)initialize:(CDVInvokedUrlCommand*)command
 {
+    NSError *error;
+    
+    [[AVAudioSession sharedInstance] setPreferredSampleRate: 48000 error:&error];
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord
+                withOptions:AVAudioSessionCategoryOptionMixWithOthers
+                error:nil];
+    [[AVAudioSession sharedInstance] setActive:true error:nil];
+
+    
     _fileUrl = [command.arguments objectAtIndex:5];
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:nil];
     [result setKeepCallbackAsBool:NO];
@@ -66,6 +75,20 @@
     }];
 }
 
+- (void)getAudioDeviceName:(CDVInvokedUrlCommand*)command
+{
+  NSArray<AVAudioSessionPortDescription *> *inputs = [[[AVAudioSession sharedInstance] currentRoute] inputs];
+    
+    NSString *portName = NULL;
+    
+  if ([inputs count] >= 1) {
+      portName = [inputs[0] portName];
+  }
+    
+  CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:portName];
+  [result setKeepCallbackAsBool:NO];
+  [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
 
 
 - (void)start:(CDVInvokedUrlCommand*)command
